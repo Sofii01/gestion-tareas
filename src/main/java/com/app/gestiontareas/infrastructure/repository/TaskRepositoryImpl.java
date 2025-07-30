@@ -4,6 +4,7 @@ import com.app.gestiontareas.domain.exception.TaskNotFoundException;
 import com.app.gestiontareas.domain.model.Task;
 import com.app.gestiontareas.domain.port.output.TaskRepository;
 import com.app.gestiontareas.infrastructure.controllers.dtos.TaskResponseDto;
+import com.app.gestiontareas.infrastructure.controllers.dtos.UpdateTaskRequestDto;
 import com.app.gestiontareas.infrastructure.controllers.mappers.TaskMapper;
 import com.app.gestiontareas.infrastructure.repository.jpa.TaskJpaEntity;
 import com.app.gestiontareas.infrastructure.repository.jpa.TaskJpaSpringData;
@@ -35,12 +36,12 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public Optional<TaskResponseDto> findById(UUID id) {
+    public TaskResponseDto findById(UUID id) {
         Optional<Task> optional = jpa.findById(id).map(this::toDomain);
         if (optional.isEmpty()){
             throw new TaskNotFoundException(id);
         }
-        return Optional.of(mapper.toDto(optional.get()));
+        return mapper.toDto(optional.get());
     }
 
     @Override
@@ -53,8 +54,32 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void deleteById(UUID id) {
-        jpa.deleteById(id);
+        TaskJpaEntity task = mapper.toJpa(findById(id));
+        jpa.delete(task);
     }
+
+    @Override
+    public TaskResponseDto update(UUID id, UpdateTaskRequestDto request) {
+        TaskJpaEntity task =mapper.toJpa( findById(id));
+        task.setTitle(request.getTitle());
+        task.setCompleted(request.isCompleted());
+        Task d = toDomain(jpa.save(task));
+        return mapper.toDto(d);
+    }
+
+    @Override
+    public void markAsComplete(UUID id) {
+        TaskJpaEntity task =mapper.toJpa( findById(id));
+        task.setCompleted(true);
+        jpa.save(task);
+    }
+
+    @Override
+    public void markAsUncompleted(UUID id) {
+        TaskJpaEntity task =mapper.toJpa( findById(id));
+        task.setCompleted(false);
+    }
+
     private Task toDomain(TaskJpaEntity entity) {
         return new Task(entity.getId(), entity.getTitle(), entity.isCompleted());
     }

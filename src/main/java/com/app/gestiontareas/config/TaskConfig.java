@@ -1,8 +1,6 @@
 package com.app.gestiontareas.config;
 
-import com.app.gestiontareas.application.usecase.CreateTaskUseCase;
-import com.app.gestiontareas.application.usecase.GetAllTaskUseCase;
-import com.app.gestiontareas.application.usecase.GetTaskUseCase;
+import com.app.gestiontareas.application.usecase.*;
 import com.app.gestiontareas.domain.port.output.TaskRepository;
 import com.app.gestiontareas.infrastructure.repository.TaskRepositoryImpl;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +20,15 @@ public class TaskConfig {
     @Bean
     public GetTaskUseCase getTaskUseCase(TaskRepository taskRepository) {
         return new GetTaskUseCase(taskRepository);
+    }
+
+    @Bean
+    public UpdateTaskUseCase updateTaskUseCase(TaskRepository taskRepository) {
+        return new UpdateTaskUseCase(taskRepository);
+    }
+    @Bean
+    public DeleteTaskUseCase deleteTaskUseCase(TaskRepository taskRepository) {
+        return new DeleteTaskUseCase(taskRepository);
     }
 
 }

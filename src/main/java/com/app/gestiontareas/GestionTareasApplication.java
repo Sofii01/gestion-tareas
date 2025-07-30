@@ -1,8 +1,16 @@
 package com.app.gestiontareas;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+@OpenAPIDefinition(
+    info = @Info(
+            title = "Gestion de tareas",
+            version = "1.0",
+            description = "Api para gestionar tareas"
+    )
+)
 @SpringBootApplication
 public class GestionTareasApplication {
 
