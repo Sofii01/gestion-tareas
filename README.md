@@ -62,10 +62,3 @@ src/
 ├── infrastructure/   # Adaptadores y configuración (web, JPA, etc.)
 └── config/           # Configuración de beans, properties, etc.
 ```
-
-### 🛠️ TODO Próximo
-- Implementación de DTOs para desacoplar la capa web
-- Manejo global de excepciones con @ControllerAdvice 
-- Endpoint para actualizar y eliminar tareas
-- Documentación con Swagger 
-- Seguridad (JWT o Basic Auth)
