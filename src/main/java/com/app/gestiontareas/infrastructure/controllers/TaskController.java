@@ -6,6 +6,7 @@ import com.app.gestiontareas.application.usecase.GetAllTaskUseCase;
 import com.app.gestiontareas.application.usecase.GetTaskUseCase;
 import com.app.gestiontareas.domain.model.Task;
 import com.app.gestiontareas.infrastructure.controllers.dtos.CreateTaskRequest;
+import com.app.gestiontareas.infrastructure.controllers.dtos.TaskResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/api/tasks")
 public class TaskController {
 
     private final CreateTaskUseCase createTask;
@@ -30,18 +31,18 @@ public class TaskController {
 
 
     @PostMapping
-    public ResponseEntity<Task> create(@Valid @RequestBody CreateTaskRequest createTaskRequest) {
+    public ResponseEntity<TaskResponseDto> create(@Valid @RequestBody CreateTaskRequest createTaskRequest) {
         String title = createTaskRequest.getTitle();
         return new ResponseEntity<>(createTask.createTask(title), HttpStatus.CREATED);
     }
     @GetMapping("/byId")
-    public ResponseEntity<Task> getTask(@RequestParam UUID id) {
-        Task task = getTask.findTaskById(id);
+    public ResponseEntity<TaskResponseDto> getTask(@RequestParam UUID id) {
+        TaskResponseDto task = getTask.findTaskById(id);
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<Task>> getTasks() {
-        List<Task> list = getAllTask.getAllTasks();
+    public ResponseEntity<List<TaskResponseDto>> getTasks() {
+        List<TaskResponseDto> list = getAllTask.getAllTasks();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
